@@ -12,7 +12,13 @@ export const Button = ({
 	type?: React.ButtonHTMLAttributes<HTMLButtonElement>['type'];
 }) => {
 	return (
-		<button className={styles.button} type={type} onClick={onClick}>
+		<button
+			className={styles.button}
+			type={type}
+			onClick={(e) => {
+				e.preventDefault();
+				onClick?.();
+			}}>
 			<Text weight={800} uppercase>
 				{title}
 			</Text>
