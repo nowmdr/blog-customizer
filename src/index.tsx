@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { StrictMode, CSSProperties } from 'react';
 import clsx from 'clsx';
 
 import { Article } from './components/article/Article';
 import { ArticleParamsForm } from './components/article-params-form/ArticleParamsForm';
-import { defaultArticleState } from './constants/articleProps';
+import { defaultArticleState, OptionType } from './constants/articleProps';
 
 import './styles/index.scss';
 import styles from './styles/index.module.scss';
@@ -15,20 +15,45 @@ const root = createRoot(domNode);
 
 const App = () => {
 	const [isOpen, setIsOpen] = useState(false);
+	const [fontFamily, setFontFamily] = useState<OptionType>(
+		defaultArticleState.fontFamilyOption
+	);
+	const [fontColor, setFontColor] = useState<OptionType>(
+		defaultArticleState.fontColor
+	);
+
+	const [backgroundColor, setBackgroundColor] = useState<OptionType>(
+		defaultArticleState.backgroundColor
+	);
+
+	const [contentWidth, setContentWidth] = useState<OptionType>(
+		defaultArticleState.contentWidth
+	);
+	const [fontSize, setFontSize] = useState<OptionType>(
+		defaultArticleState.fontSizeOption
+	);
 
 	return (
 		<div
 			className={clsx(styles.main)}
 			style={
 				{
-					'--font-family': defaultArticleState.fontFamilyOption.value,
-					'--font-size': defaultArticleState.fontSizeOption.value,
-					'--font-color': defaultArticleState.fontColor.value,
-					'--container-width': defaultArticleState.contentWidth.value,
-					'--bg-color': defaultArticleState.backgroundColor.value,
+					'--font-family': fontFamily.value,
+					'--font-size': fontSize.value,
+					'--font-color': fontColor.value,
+					'--container-width': contentWidth.value,
+					'--bg-color': backgroundColor.value,
 				} as CSSProperties
 			}>
-			<ArticleParamsForm isOpen={isOpen} setIsOpen={setIsOpen} />
+			<ArticleParamsForm
+				setFontSize={setFontSize}
+				setContentWidth={setContentWidth}
+				setBackgroundColor={setBackgroundColor}
+				setFontColor={setFontColor}
+				setFontFamily={setFontFamily}
+				isOpen={isOpen}
+				setIsOpen={setIsOpen}
+			/>
 			<Article isOpen={isOpen} setIsOpen={setIsOpen} />
 		</div>
 	);
