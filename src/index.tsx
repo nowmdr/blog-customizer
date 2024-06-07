@@ -29,7 +29,7 @@ const App = () => {
 				} as CSSProperties
 			}>
 			<ArticleParamsForm isOpen={isOpen} setIsOpen={setIsOpen} />
-			<Article />
+			<Article isOpen={isOpen} setIsOpen={setIsOpen} />
 		</div>
 	);
 };
