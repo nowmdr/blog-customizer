@@ -5,6 +5,10 @@ import plane from 'src/images/plane.png';
 import { Text } from 'components/text';
 
 import styles from './Article.module.scss';
+// interface ArticleProps {
+// 	isOpen: boolean;
+// 	setIsOpen: (isOpen: boolean) => void;
+// }
 
 export const Article = () => {
 	return (
