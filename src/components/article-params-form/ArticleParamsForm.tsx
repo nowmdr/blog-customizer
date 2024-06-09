@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import { useState, useRef } from 'react';
 import { ArrowButton } from 'components/arrow-button';
 import { Select } from 'components/select';
 import { RadioGroup } from '../radio-group';
 import { Separator } from '../separator';
+import { Text } from '../text';
+import { useOutsideClickClose } from '../../hooks/useOutsideClickClose';
 import {
 	fontFamilyOptions,
 	backgroundColors,
@@ -18,8 +20,8 @@ import clsx from 'clsx';
 
 import styles from './ArticleParamsForm.module.scss';
 interface ArticleParamsFormProps {
-	isOpen: boolean;
-	setIsOpen: (isOpen: boolean) => void;
+	isMenuOpen: boolean;
+	setIsMenuOpen: (isOpen: boolean) => void;
 	setFontFamily: (fontFamily: OptionType) => void;
 	setFontColor: (fontColor: OptionType) => void;
 	setBackgroundColor: (backgroundColor: OptionType) => void;
@@ -28,14 +30,20 @@ interface ArticleParamsFormProps {
 }
 
 export const ArticleParamsForm = ({
-	isOpen,
-	setIsOpen,
+	isMenuOpen,
+	setIsMenuOpen,
 	setFontFamily,
 	setFontColor,
 	setBackgroundColor,
 	setContentWidth,
 	setFontSize,
 }: ArticleParamsFormProps) => {
+	const rootRef = useRef<HTMLDivElement>(null);
+	useOutsideClickClose({
+		isOpen: isMenuOpen,
+		rootRef,
+		onChange: setIsMenuOpen,
+	});
 	// form states
 	const [selectedFontFamily, setSelectedFontFamily] = useState<OptionType>(
 		defaultArticleState.fontFamilyOption
@@ -52,7 +60,8 @@ export const ArticleParamsForm = ({
 		defaultArticleState.fontSizeOption
 	);
 	// form handlers
-	const handleApply = () => {
+	const handleApply = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
 		setFontFamily(selectedFontFamily);
 		setFontColor(selectedFontColor);
 		setBackgroundColor(selectedBackgroundColor);
@@ -78,10 +87,19 @@ export const ArticleParamsForm = ({
 	};
 	return (
 		<>
-			<ArrowButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
+			<ArrowButton
+				isMenuOpen={isMenuOpen}
+				onClick={() => setIsMenuOpen(!isMenuOpen)}
+			/>
 			<aside
-				className={clsx(styles.container, { [styles.container_open]: isOpen })}>
-				<form className={styles.form}>
+				ref={rootRef}
+				className={clsx(styles.container, {
+					[styles.container_open]: isMenuOpen,
+				})}>
+				<form className={styles.form} onSubmit={handleApply}>
+					<Text as='h2' size={31} weight={800} uppercase dynamicLite>
+						Задайте параметры
+					</Text>
 					<Select
 						selected={selectedFontFamily}
 						onChange={setSelectedFontFamily}
@@ -116,7 +134,7 @@ export const ArticleParamsForm = ({
 					/>
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' type='reset' onClick={handleReset} />
-						<Button title='Применить' type='submit' onClick={handleApply} />
+						<Button title='Применить' type='submit' />
 					</div>
 				</form>
 			</aside>

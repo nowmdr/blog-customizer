@@ -14,7 +14,7 @@ const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
 
 const App = () => {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [fontFamily, setFontFamily] = useState<OptionType>(
 		defaultArticleState.fontFamilyOption
 	);
@@ -34,7 +34,7 @@ const App = () => {
 	);
 
 	return (
-		<div
+		<main
 			className={clsx(styles.main)}
 			style={
 				{
@@ -51,11 +51,11 @@ const App = () => {
 				setBackgroundColor={setBackgroundColor}
 				setFontColor={setFontColor}
 				setFontFamily={setFontFamily}
-				isOpen={isOpen}
-				setIsOpen={setIsOpen}
+				isMenuOpen={isMenuOpen}
+				setIsMenuOpen={setIsMenuOpen}
 			/>
-			<Article isOpen={isOpen} setIsOpen={setIsOpen} />
-		</div>
+			<Article />
+		</main>
 	);
 };
 
